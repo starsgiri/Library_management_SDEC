@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>Library_System</defaultLandingTab>
+    <description>Library Management System – Manage books, members, and circulation in your library.</description>
+    <formFactors>Large</formFactors>
+    <formFactors>Small</formFactors>
+
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>Library Management</label>
+    <navType>Standard</navType>
+    <tabs>Library_System</tabs>
+    <tabs>Book__c</tabs>
+    <tabs>Library_Member__c</tabs>
+    <tabs>Book_Issue__c</tabs>
+    <tabs>Book_Category__c</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

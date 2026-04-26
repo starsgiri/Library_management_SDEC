@@ -1,0 +1,128 @@
+/* ─── Circulation Manager Styles ─── */
+
+.circulation-container {
+    padding: 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ─── Issue Book Card ─── */
+
+.action-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(27, 42, 74, 0.06);
+    border: 1px solid #EDF0F5;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.issue-header {
+    background: linear-gradient(135deg, #2E86AB 0%, #1B6B93 100%);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.issue-form .form-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.form-field {
+    flex: 1;
+    min-width: 250px;
+}
+
+.field-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5A6A85;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.form-action {
+    flex-shrink: 0;
+    padding-bottom: 2px;
+}
+
+/* ─── Issues Sections ─── */
+
+.issues-section {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(27, 42, 74, 0.06);
+    border: 1px solid #EDF0F5;
+    overflow: hidden;
+}
+
+.section-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid #F0F3F8;
+}
+
+.section-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-heading {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1B2A4A;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.record-count {
+    background: #EDF0F5;
+    color: #5A6A85;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+}
+
+.table-wrap {
+    overflow: hidden;
+}
+
+/* ─── Empty State ─── */
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #5A6A85;
+}
+
+.empty-state p {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}

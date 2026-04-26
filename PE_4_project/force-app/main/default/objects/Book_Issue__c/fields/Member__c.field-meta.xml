@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Member__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>The member who is borrowing the book</description>
+    <externalId>false</externalId>
+    <label>Member</label>
+    <referenceTo>Library_Member__c</referenceTo>
+    <relationshipLabel>Book Issues</relationshipLabel>
+    <relationshipName>Book_Issues</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

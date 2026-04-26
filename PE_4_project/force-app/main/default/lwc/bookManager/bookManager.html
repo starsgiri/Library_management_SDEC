@@ -1,0 +1,77 @@
+<template>
+    <div class="manager-container">
+        <!-- ─── TOOLBAR ─── -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <h2 class="section-heading">
+                    <lightning-icon icon-name="utility:knowledge_base" size="x-small"></lightning-icon>
+                    &nbsp;Book Catalog
+                </h2>
+                <span class="record-count">{bookCount} books</span>
+            </div>
+            <div class="toolbar-right">
+                <lightning-input type="search" placeholder="Search by title, author or ISBN…"
+                                 value={searchKey} onchange={handleSearch}
+                                 class="search-input"></lightning-input>
+                <lightning-button label="Add Book" variant="brand" icon-name="utility:add"
+                                  onclick={openAddModal} class="add-btn"></lightning-button>
+            </div>
+        </div>
+
+        <!-- ─── BOOKS TABLE ─── -->
+        <div class="table-wrap">
+            <template if:true={hasBooks}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={filteredBooks}
+                    columns={columns}
+                    hide-checkbox-column
+                    onrowaction={handleRowAction}
+                    show-row-number-column>
+                </lightning-datatable>
+            </template>
+            <template if:false={hasBooks}>
+                <div class="empty-state">
+                    <lightning-icon icon-name="utility:knowledge_base" size="large"></lightning-icon>
+                    <p>No books found. Click <strong>Add Book</strong> to get started.</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- ─── ADD / EDIT MODAL ─── -->
+        <template if:true={showModal}>
+            <section class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                        </button>
+                        <h2 class="slds-modal__title">{modalTitle}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_large">
+                        <lightning-record-edit-form object-api-name="Book__c" record-id={editRecordId}
+                                                     onsuccess={handleSaveSuccess} onerror={handleSaveError}>
+                            <div class="form-grid">
+                                <lightning-input-field field-name="Name"></lightning-input-field>
+                                <lightning-input-field field-name="Author__c"></lightning-input-field>
+                                <lightning-input-field field-name="ISBN__c"></lightning-input-field>
+                                <lightning-input-field field-name="Category__c"></lightning-input-field>
+                                <lightning-input-field field-name="Publisher__c"></lightning-input-field>
+                                <lightning-input-field field-name="Publication_Year__c"></lightning-input-field>
+                                <lightning-input-field field-name="Total_Copies__c"></lightning-input-field>
+                                <lightning-input-field field-name="Available_Copies__c"></lightning-input-field>
+                                <lightning-input-field field-name="Status__c"></lightning-input-field>
+                            </div>
+                            <div class="modal-actions">
+                                <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                                <lightning-button label="Save" variant="brand" type="submit"></lightning-button>
+                            </div>
+                        </lightning-record-edit-form>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

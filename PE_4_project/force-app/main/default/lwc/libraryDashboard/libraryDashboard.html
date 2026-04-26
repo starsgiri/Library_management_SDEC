@@ -1,0 +1,125 @@
+<template>
+    <div class="dashboard">
+        <!-- ─── STATS CARDS ─── -->
+        <div class="stats-grid">
+            <!-- Total Books -->
+            <div class="stat-card stat-books">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:knowledge_base" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{totalBooks}</span>
+                    <span class="stat-label">Total Books</span>
+                </div>
+            </div>
+
+            <!-- Available Copies -->
+            <div class="stat-card stat-available">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:check" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{availableCopies}</span>
+                    <span class="stat-label">Available Copies</span>
+                </div>
+            </div>
+
+            <!-- Total Members -->
+            <div class="stat-card stat-members">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:people" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{totalMembers}</span>
+                    <span class="stat-label">Total Members</span>
+                </div>
+            </div>
+
+            <!-- Active Members -->
+            <div class="stat-card stat-active">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:user" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{activeMembers}</span>
+                    <span class="stat-label">Active Members</span>
+                </div>
+            </div>
+
+            <!-- Books Issued -->
+            <div class="stat-card stat-issued">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:upload" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{booksIssued}</span>
+                    <span class="stat-label">Books Issued</span>
+                </div>
+            </div>
+
+            <!-- Overdue Books -->
+            <div class="stat-card stat-overdue">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:warning" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{overdueBooks}</span>
+                    <span class="stat-label">Overdue</span>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="stat-card stat-categories">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:filterList" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{totalCategories}</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+            </div>
+
+            <!-- Fine Collected -->
+            <div class="stat-card stat-fine">
+                <div class="stat-icon-wrap">
+                    <lightning-icon icon-name="utility:moneybag" size="medium"></lightning-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">&#8377;{totalFineCollected}</span>
+                    <span class="stat-label">Fines Collected</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── RECENT ACTIVITY ─── -->
+        <div class="recent-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <lightning-icon icon-name="utility:clock" size="x-small" class="section-icon"></lightning-icon>
+                    Recent Activity
+                </h2>
+                <lightning-button label="Refresh" variant="neutral" icon-name="utility:refresh"
+                                  onclick={refreshData} class="refresh-btn"></lightning-button>
+            </div>
+
+            <template if:true={hasRecentActivity}>
+                <div class="activity-table-wrap">
+                    <lightning-datatable
+                        key-field="Id"
+                        data={recentActivity}
+                        columns={activityColumns}
+                        hide-checkbox-column
+                        show-row-number-column>
+                    </lightning-datatable>
+                </div>
+            </template>
+
+            <template if:false={hasRecentActivity}>
+                <div class="empty-state">
+                    <lightning-icon icon-name="utility:sentiment_neutral" size="large" class="empty-icon"></lightning-icon>
+                    <p class="empty-text">No recent activity yet. Start by issuing books to members!</p>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,119 @@
+/* ─── Library App – Root Styles ─── */
+
+.library-app {
+    --brand-primary: #1B2A4A;
+    --brand-secondary: #2E86AB;
+    --brand-accent: #A23B72;
+    --brand-success: #2DC653;
+    --brand-warning: #F18F01;
+    --brand-danger: #C73E1D;
+    --surface: #F7F9FC;
+    --surface-raised: #FFFFFF;
+    --text-primary: #1B2A4A;
+    --text-secondary: #5A6A85;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow-sm: 0 1px 3px rgba(27, 42, 74, 0.08);
+    --shadow-md: 0 4px 14px rgba(27, 42, 74, 0.10);
+    --shadow-lg: 0 8px 30px rgba(27, 42, 74, 0.12);
+
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--surface);
+    min-height: 100vh;
+}
+
+/* ─── Header ─── */
+
+.app-header {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+    padding: 1.5rem 2rem;
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.app-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60%;
+    left: 10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-icon {
+    --sds-c-icon-color-foreground-default: #fff;
+    --sds-c-icon-color-background: rgba(255,255,255,0.15);
+}
+
+.title-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.app-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 0.15rem 0 0;
+    font-weight: 400;
+}
+
+/* ─── Navigation Container ─── */
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 0;
+}
+
+/* ─── Footer ─── */
+
+.app-footer {
+    text-align: center;
+    padding: 1.5rem 2rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    border-top: 1px solid #E8ECF1;
+    margin-top: 2rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}

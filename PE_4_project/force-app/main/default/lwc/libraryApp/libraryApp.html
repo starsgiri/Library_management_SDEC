@@ -1,0 +1,49 @@
+<template>
+    <div class="library-app">
+        <!-- ─── HEADER ─── -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-area">
+                    <lightning-icon icon-name="standard:knowledge" size="large" class="header-icon"></lightning-icon>
+                    <div class="title-block">
+                        <h1 class="app-title">Library Management System</h1>
+                        <p class="app-subtitle">Manage books, members &amp; circulation</p>
+                    </div>
+                </div>
+                <div class="header-badge">
+                    <lightning-badge label="Developer Edition" class="slds-badge_inverse"></lightning-badge>
+                </div>
+            </div>
+        </header>
+
+        <!-- ─── NAVIGATION TABS ─── -->
+        <div class="nav-container">
+            <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+                <lightning-tab label="Dashboard" value="dashboard"
+                               icon-name="utility:chart" onclick={handleTabChange}>
+                    <c-library-dashboard></c-library-dashboard>
+                </lightning-tab>
+
+                <lightning-tab label="Books" value="books"
+                               icon-name="utility:knowledge_base" onclick={handleTabChange}>
+                    <c-book-manager></c-book-manager>
+                </lightning-tab>
+
+                <lightning-tab label="Members" value="members"
+                               icon-name="utility:people" onclick={handleTabChange}>
+                    <c-member-manager></c-member-manager>
+                </lightning-tab>
+
+                <lightning-tab label="Circulation" value="circulation"
+                               icon-name="utility:rotate" onclick={handleTabChange}>
+                    <c-circulation-manager></c-circulation-manager>
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+
+        <!-- ─── FOOTER ─── -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Library Management System &bull; Built with Salesforce Lightning</p>
+        </footer>
+    </div>
+</template>

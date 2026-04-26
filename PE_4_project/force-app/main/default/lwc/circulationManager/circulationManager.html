@@ -1,0 +1,109 @@
+<template>
+    <div class="circulation-container">
+        <!-- ─── ISSUE BOOK SECTION ─── -->
+        <div class="action-card">
+            <div class="card-header issue-header">
+                <lightning-icon icon-name="utility:upload" size="small"></lightning-icon>
+                <h2>Issue a Book</h2>
+            </div>
+            <div class="card-body">
+                <div class="issue-form">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label class="field-label">Select Book</label>
+                            <lightning-record-picker
+                                label="Book"
+                                placeholder="Search for a book…"
+                                object-api-name="Book__c"
+                                value={selectedBookId}
+                                onchange={handleBookSelect}
+                                variant="label-hidden">
+                            </lightning-record-picker>
+                        </div>
+                        <div class="form-field">
+                            <label class="field-label">Select Member</label>
+                            <lightning-record-picker
+                                label="Member"
+                                placeholder="Search for a member…"
+                                object-api-name="Library_Member__c"
+                                value={selectedMemberId}
+                                onchange={handleMemberSelect}
+                                variant="label-hidden">
+                            </lightning-record-picker>
+                        </div>
+                        <div class="form-action">
+                            <lightning-button label="Issue Book" variant="brand" icon-name="utility:upload"
+                                              onclick={handleIssueBook} disabled={isIssueDisabled}
+                                              class="issue-btn"></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── ACTIVE ISSUES TABLE ─── -->
+        <div class="issues-section">
+            <div class="section-bar">
+                <div class="section-bar-left">
+                    <h2 class="section-heading">
+                        <lightning-icon icon-name="utility:list" size="x-small"></lightning-icon>
+                        &nbsp;Active Issues
+                    </h2>
+                    <span class="record-count">{activeCount} records</span>
+                </div>
+                <lightning-button label="Refresh" variant="neutral" icon-name="utility:refresh"
+                                  onclick={refreshData}></lightning-button>
+            </div>
+
+            <div class="table-wrap">
+                <template if:true={hasActiveIssues}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={activeIssues}
+                        columns={activeColumns}
+                        hide-checkbox-column
+                        onrowaction={handleReturnAction}
+                        show-row-number-column>
+                    </lightning-datatable>
+                </template>
+                <template if:false={hasActiveIssues}>
+                    <div class="empty-state">
+                        <lightning-icon icon-name="utility:check" size="large"></lightning-icon>
+                        <p>All books have been returned. No active issues!</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ─── ALL ISSUES HISTORY ─── -->
+        <div class="issues-section">
+            <div class="section-bar">
+                <div class="section-bar-left">
+                    <h2 class="section-heading">
+                        <lightning-icon icon-name="utility:date_input" size="x-small"></lightning-icon>
+                        &nbsp;Issue History
+                    </h2>
+                    <span class="record-count">{historyCount} records</span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <template if:true={hasHistory}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={allIssues}
+                        columns={historyColumns}
+                        hide-checkbox-column
+                        show-row-number-column>
+                    </lightning-datatable>
+                </template>
+                <template if:false={hasHistory}>
+                    <div class="empty-state">
+                        <lightning-icon icon-name="utility:sentiment_neutral" size="large"></lightning-icon>
+                        <p>No issue history yet.</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>
