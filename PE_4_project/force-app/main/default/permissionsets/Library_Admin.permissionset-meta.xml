@@ -107,6 +107,11 @@
         <field>Book_Issue__c.Fine_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Book_Issue__c.Renewal_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 
     <!-- ─── Field Permissions: Book_Category__c ─── -->
     <fieldPermissions>

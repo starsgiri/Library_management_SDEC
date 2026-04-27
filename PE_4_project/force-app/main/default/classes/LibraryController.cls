@@ -174,7 +174,7 @@ public with sharing class LibraryController {
             SELECT Id, Name, Book__c, Book__r.Name, Book__r.ISBN__c,
                    Member__c, Member__r.Name, Member__r.Email__c,
                    Issue_Date__c, Due_Date__c, Return_Date__c,
-                   Issue_Status__c, Fine_Amount__c
+                   Issue_Status__c, Fine_Amount__c, Renewal_Count__c
             FROM Book_Issue__c
             ORDER BY Issue_Date__c DESC
             LIMIT 200
@@ -190,11 +190,63 @@ public with sharing class LibraryController {
             SELECT Id, Name, Book__c, Book__r.Name, Book__r.ISBN__c,
                    Member__c, Member__r.Name, Member__r.Email__c,
                    Issue_Date__c, Due_Date__c, Return_Date__c,
-                   Issue_Status__c, Fine_Amount__c
+                   Issue_Status__c, Fine_Amount__c, Renewal_Count__c
             FROM Book_Issue__c
             WHERE Issue_Status__c IN ('Issued', 'Overdue')
             ORDER BY Due_Date__c ASC
         ];
+    }
+
+    /**
+     * Syncs issue status for overdue records.
+     */
+    @AuraEnabled
+    public static Integer syncOverdueIssues() {
+        List<Book_Issue__c> overdueIssues = [
+            SELECT Id, Issue_Status__c, Due_Date__c
+            FROM Book_Issue__c
+            WHERE Issue_Status__c = 'Issued' AND Due_Date__c < :Date.today()
+            FOR UPDATE
+        ];
+
+        for (Book_Issue__c issue : overdueIssues) {
+            issue.Issue_Status__c = 'Overdue';
+        }
+
+        if (!overdueIssues.isEmpty()) {
+            update overdueIssues;
+        }
+
+        return overdueIssues.size();
+    }
+
+    /**
+     * Renews an issued book by extending due date by 7 days.
+     * Allows maximum 2 renewals.
+     */
+    @AuraEnabled
+    public static Book_Issue__c renewBook(Id issueId) {
+        Book_Issue__c issue = [
+            SELECT Id, Due_Date__c, Issue_Status__c, Renewal_Count__c
+            FROM Book_Issue__c
+            WHERE Id = :issueId
+            FOR UPDATE
+        ];
+
+        if (issue.Issue_Status__c != 'Issued') {
+            throw new AuraHandledException('Only issued books can be renewed.');
+        }
+
+        Integer renewalCount = issue.Renewal_Count__c == null ? 0 : issue.Renewal_Count__c.intValue();
+        if (renewalCount >= 2) {
+            throw new AuraHandledException('Maximum renewal limit reached (2).');
+        }
+
+        issue.Due_Date__c = issue.Due_Date__c.addDays(7);
+        issue.Renewal_Count__c = renewalCount + 1;
+        update issue;
+
+        return issue;
     }
 
     /**
@@ -248,6 +300,7 @@ public with sharing class LibraryController {
         issue.Due_Date__c = Date.today().addDays(14);
         issue.Issue_Status__c = 'Issued';
         issue.Fine_Amount__c = 0;
+        issue.Renewal_Count__c = 0;
         insert issue;
 
         // Update book available copies

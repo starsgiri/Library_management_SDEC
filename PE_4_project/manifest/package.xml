@@ -29,6 +29,7 @@
         <members>Book_Issue__c.Return_Date__c</members>
         <members>Book_Issue__c.Issue_Status__c</members>
         <members>Book_Issue__c.Fine_Amount__c</members>
+        <members>Book_Issue__c.Renewal_Count__c</members>
         <members>Book_Category__c.Description__c</members>
         <name>CustomField</name>
     </types>

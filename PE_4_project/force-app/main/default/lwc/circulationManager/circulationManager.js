@@ -1,6 +1,8 @@
 import { LightningElement, wire, track } from 'lwc';
 import issueBook from '@salesforce/apex/LibraryController.issueBook';
 import returnBook from '@salesforce/apex/LibraryController.returnBook';
+import renewBook from '@salesforce/apex/LibraryController.renewBook';
+import syncOverdueIssues from '@salesforce/apex/LibraryController.syncOverdueIssues';
 import getActiveIssues from '@salesforce/apex/LibraryController.getActiveIssues';
 import getBookIssues from '@salesforce/apex/LibraryController.getBookIssues';
 import { refreshApex } from '@salesforce/apex';
@@ -13,11 +15,13 @@ const ACTIVE_COLUMNS = [
     { label: 'Member', fieldName: 'memberName', type: 'text' },
     { label: 'Issue Date', fieldName: 'Issue_Date__c', type: 'date' },
     { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date' },
+    { label: 'Renewals', fieldName: 'Renewal_Count__c', type: 'number' },
     { label: 'Status', fieldName: 'Issue_Status__c', type: 'text' },
     {
         type: 'action',
         typeAttributes: {
             rowActions: [
+                { label: 'Renew Book', name: 'renew' },
                 { label: 'Return Book', name: 'return' }
             ]
         }
@@ -30,6 +34,7 @@ const HISTORY_COLUMNS = [
     { label: 'Member', fieldName: 'memberName', type: 'text' },
     { label: 'Issue Date', fieldName: 'Issue_Date__c', type: 'date' },
     { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date' },
+    { label: 'Renewals', fieldName: 'Renewal_Count__c', type: 'number' },
     { label: 'Return Date', fieldName: 'Return_Date__c', type: 'date' },
     { label: 'Status', fieldName: 'Issue_Status__c', type: 'text' },
     {
@@ -48,6 +53,10 @@ export default class CirculationManager extends LightningElement {
     historyColumns = HISTORY_COLUMNS;
     wiredActiveResult;
     wiredHistoryResult;
+
+    connectedCallback() {
+        this.refreshData();
+    }
 
     get isIssueDisabled() {
         return !this.selectedBookId || !this.selectedMemberId;
@@ -123,7 +132,24 @@ export default class CirculationManager extends LightningElement {
         const action = event.detail.action;
         const row = event.detail.row;
 
-        if (action.name === 'return') {
+        if (action.name === 'renew') {
+            if (row.Issue_Status__c !== 'Issued') {
+                this.showToast('Warning', 'Only Issued books can be renewed. Please return overdue books first.', 'warning');
+                return;
+            }
+            renewBook({ issueId: row.Id })
+                .then(result => {
+                    this.showToast(
+                        'Success',
+                        'Book renewed successfully! New due date: ' + new Date(result.Due_Date__c).toLocaleDateString(),
+                        'success'
+                    );
+                    this.refreshData();
+                })
+                .catch(error => {
+                    this.showToast('Error', error.body?.message || 'Failed to renew book', 'error');
+                });
+        } else if (action.name === 'return') {
             returnBook({ issueId: row.Id })
                 .then(result => {
                     let msg = 'Book returned successfully!';
@@ -140,8 +166,14 @@ export default class CirculationManager extends LightningElement {
     }
 
     refreshData() {
-        refreshApex(this.wiredActiveResult);
-        refreshApex(this.wiredHistoryResult);
+        syncOverdueIssues()
+            .then(() => Promise.all([
+                this.wiredActiveResult ? refreshApex(this.wiredActiveResult) : Promise.resolve(),
+                this.wiredHistoryResult ? refreshApex(this.wiredHistoryResult) : Promise.resolve()
+            ]))
+            .catch(error => {
+                this.showToast('Error', error.body?.message || 'Failed to refresh circulation data', 'error');
+            });
     }
 
     showToast(title, message, variant) {
